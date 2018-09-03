@@ -49,9 +49,12 @@ public class Replacer {
     public String convertToDigitString(List<Character> chars) {
         String result = "";
         for(char c: chars){
-            System.out.println(c);
             result +=  posInAlphabet.get(c) + " ";
         }
         return result;
+    }
+
+    public String convert(String toConvert){
+        return convertToDigitString(extractToList(toConvert));
     }
 }
