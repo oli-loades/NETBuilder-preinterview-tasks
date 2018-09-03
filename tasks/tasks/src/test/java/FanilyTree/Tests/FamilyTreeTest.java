@@ -1,5 +1,6 @@
 package FanilyTree.Tests;
 
+import FamilyTree.Domain.Family;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -47,9 +48,9 @@ public class FamilyTreeTest {
         fam.male("bob");
         fam.female("sue");
         fam.add("rob");
-        assertEquals(false,fam.isMale("bob"));
-        assertEquals(true,fam.isMale("sue"));
-        assertEquals(false,fam.isMale("rob"));
+        assertEquals(false,fam.isFemale("bob"));
+        assertEquals(true,fam.isFemale("sue"));
+        assertEquals(false,fam.isFemale("rob"));
     }
 
     @Ignore
