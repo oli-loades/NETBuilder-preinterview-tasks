@@ -1,6 +1,6 @@
 package FanilyTree.Tests;
 
-import FamilyTree.Domain.Family;
+import FamilyTree.Business.Family;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
