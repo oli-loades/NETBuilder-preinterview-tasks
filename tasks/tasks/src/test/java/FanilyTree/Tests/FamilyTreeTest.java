@@ -5,6 +5,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class FamilyTreeTest {
@@ -53,21 +56,47 @@ public class FamilyTreeTest {
         assertEquals(false,fam.isFemale("rob"));
     }
 
-    @Ignore
     @Test
     public void setParentTest(){
+        fam.male("bob");
+        fam.female("sue");
+        fam.male("rob");
+        fam.female("Kat");
 
+        assertEquals(true,fam.setParent("bob","rob"));
+        assertEquals(true,fam.seParent("bob","sue"));
+        assertEquals(false,fam.setParent("bob","kat"));
+
+        //cannot be own ancester
     }
 
-    @Ignore
     @Test
     public void getParentTest(){
+        fam.male("bob");
+        fam.female("sue");
+        fam.male("rob");
 
+        fam.setParent("bob","rob");
+        fam.seParent("bob","sue");
+
+        String[] expected = {"sue", "rob"};
+
+        assertEquals(expected,fam.getParents("bob"));
     }
 
-    @Ignore
     @Test
     public void getChildrenTest(){
+        fam.male("bob");
+        fam.female("sue");
+        fam.male("rob");
 
+        fam.setParent("bob","rob");
+        fam.setParent("sue","rob");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("bob");
+        expected.add("sue");
+
+        assertEquals(expected,fam.getChildren("ron"));
     }
 }
