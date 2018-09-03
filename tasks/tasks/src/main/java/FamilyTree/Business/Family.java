@@ -3,10 +3,7 @@ package FamilyTree.Business;
 import FamilyTree.Constants.Constants;
 import FamilyTree.Domain.Person;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Family {
     private Map<String, Person> family;
@@ -21,11 +18,12 @@ public class Family {
 
     private boolean add(String name, String gender) {
         boolean isAdded = false;
-        if (family.get(name) == null) {
+        Optional<Person> oPerson = get(name);
+        if (!oPerson.isPresent()) {
             Person person = new Person(name, gender);
             family.put(name, person);
             isAdded = true;
-        } else if (family.get(name).getGender().equals(Constants.NONE) && !gender.equals(Constants.NONE)) {
+        } else if (oPerson.get().getGender().equals(Constants.NONE) && !gender.equals(Constants.NONE)) {
             family.get(name).setGender(gender);
             isAdded = true;
         }
@@ -50,25 +48,33 @@ public class Family {
 
     public boolean isGender(String name, String gender) {
         boolean isGender = false;
-        if (family.get(name) != null) {
-            isGender = family.get(name).getGender().equals(gender);
+        if (get(name).isPresent()) {
+            isGender = get(name).get().getGender().equals(gender);
         }
         return isGender;
     }
 
+    private Optional<Person> get(String name){
+        Optional<Person> person = Optional.empty();
+        if(family.get(name) != null){
+            person = Optional.of(family.get(name));
+        }
+        return person;
+    }
+
     public boolean setParent(String childName, String parentName) {
         boolean isSet = false;
-        Person child = family.get(childName);
-        Person parent = family.get(parentName);
+        Optional<Person> child = get(childName);
+        Optional<Person> parent = get(parentName);
 
-        if (child != null && parent != null) {//both exist
-            if (parent.getGender().equals(Constants.FEMALE) && !child.getParentByPos(Constants.FEMALE_PARENT_POS).isPresent()) {//MOTHER
-                child.addParent(parent, Constants.FEMALE_PARENT_POS);
-                parent.addChild(child);
+        if (child.isPresent() && parent.isPresent()) {//both exist
+            if (parent.get().getGender().equals(Constants.FEMALE) && !child.get().getParentByPos(Constants.FEMALE_PARENT_POS).isPresent()) {
+                child.get().addParent(parent.get(), Constants.FEMALE_PARENT_POS);
+                parent.get().addChild(child.get());
                 isSet = true;
-            } else if (parent.getGender().equals(Constants.MALE) && !child.getParentByPos(Constants.MALE_PARENT_POS).isPresent()) {//FATHER
-                child.addParent(parent, Constants.MALE_PARENT_POS);
-                parent.addChild(child);
+            } else if (parent.get().getGender().equals(Constants.MALE) && !child.get().getParentByPos(Constants.MALE_PARENT_POS).isPresent()) {
+                child.get().addParent(parent.get(), Constants.MALE_PARENT_POS);
+                parent.get().addChild(child.get());
                 isSet = true;
             }
         }
@@ -76,10 +82,10 @@ public class Family {
     }
 
     public String[] getParents(String name) {
-        Person person = family.get(name);
+        Optional<Person> person = get(name);
         String parentNames[] = new String[2];
-        if (person != null) {
-            Person parents[] = person.getParents();
+        if (person.isPresent()) {
+            Person parents[] = person.get().getParents();
             for (int i = 0; i < 2; i++) {
                 parentNames[i] = parents[i].getName();
             }
@@ -90,11 +96,11 @@ public class Family {
 
 
     public String[] getChildren(String name) {
-        Person person = family.get(name);
+        Optional<Person> person = get(name);
         String children[] = new String[0];
-        if (person != null) {
-            children = new String[person.getNumChildren()];
-            List<Person> childrenList = person.getChildren();
+        if (person.isPresent()) {
+            children = new String[person.get().getNumChildren()];
+            List<Person> childrenList = person.get().getChildren();
             for (int i = 0; i < childrenList.size(); i++) {
                 children[i] = childrenList.get(i).getName();
             }
