@@ -48,8 +48,11 @@ public class Replacer {
 
     public String convertToDigitString(List<Character> chars) {
         String result = "";
-        for(char c: chars){
-            result +=  posInAlphabet.get(c) + " ";
+        for(int i = 0; i< chars.size();i++){
+            result +=  posInAlphabet.get(chars.get(i));
+            if(i!=chars.size()-1){
+                result += " ";
+            }
         }
         return result;
     }
