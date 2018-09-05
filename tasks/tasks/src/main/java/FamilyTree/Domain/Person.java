@@ -12,23 +12,23 @@ public class Person {
     private Person[] parents;
     private List<Person> children;
 
-    public Person (){
+    public Person() {
         this.name = "";
         this.gender = "";
         parents = new Person[2];
         children = new ArrayList<>();
     }
 
-    public Person(String name){
+    public Person(String name) {
         this.name = name;
         this.gender = "";
         parents = new Person[2];
         children = new ArrayList<>();
     }
 
-    public Person(String name, String gender){
+    public Person(String name, String gender) {
         this.name = name;
-        this.gender=gender;
+        this.gender = gender;
         parents = new Person[2];
         children = new ArrayList<>();
     }
@@ -49,31 +49,31 @@ public class Person {
         this.gender = gender;
     }
 
-    public void addChild(Person child){
+    public void addChild(Person child) {
         children.add(child);
     }
 
-    public void addParent(Person parent,int pos){
-            parents[pos] = parent;
+    public void addParent(Person parent, int pos) {
+        parents[pos] = parent;
     }
 
-    public Person[] getParents(){
+    public Person[] getParents() {
         return parents;
     }
 
-    public List<Person> getChildren(){
+    public List<Person> getChildren() {
         return children;
     }
 
-    public Optional<Person> getParentByPos(int pos){
-       Optional<Person> parent = Optional.empty();
-        if(parents[pos]!=null){
+    public Optional<Person> getParentByPos(int pos) {
+        Optional<Person> parent = Optional.empty();
+        if (parents[pos] != null) {
             parent = Optional.of(parents[pos]);
         }
         return parent;
     }
 
-    public int getNumChildren(){
+    public int getNumChildren() {
         return children.size();
     }
 }

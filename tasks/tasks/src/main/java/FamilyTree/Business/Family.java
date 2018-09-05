@@ -24,7 +24,7 @@ public class Family {
             family.put(name, person);
             isAdded = true;
         } else if (oPerson.get().getGender().equals(Constants.NONE) && !gender.equals(Constants.NONE)) {
-            family.get(name).setGender(gender);
+            oPerson.get().setGender(gender);
             isAdded = true;
         }
         return isAdded;
@@ -46,7 +46,7 @@ public class Family {
         return isGender(name, Constants.FEMALE);
     }
 
-    public boolean isGender(String name, String gender) {
+    private boolean isGender(String name, String gender) {
         boolean isGender = false;
         if (get(name).isPresent()) {
             isGender = get(name).get().getGender().equals(gender);
@@ -54,9 +54,9 @@ public class Family {
         return isGender;
     }
 
-    private Optional<Person> get(String name){
+    private Optional<Person> get(String name) {
         Optional<Person> person = Optional.empty();
-        if(family.get(name) != null){
+        if (family.get(name) != null) {
             person = Optional.of(family.get(name));
         }
         return person;
@@ -64,17 +64,19 @@ public class Family {
 
     public boolean setParent(String childName, String parentName) {
         boolean isSet = false;
-        Optional<Person> child = get(childName);
-        Optional<Person> parent = get(parentName);
+        Optional<Person> oChild = get(childName);
+        Optional<Person> oParent = get(parentName);
 
-        if (child.isPresent() && parent.isPresent()) {//both exist
-            if (parent.get().getGender().equals(Constants.FEMALE) && !child.get().getParentByPos(Constants.FEMALE_PARENT_POS).isPresent()) {
-                child.get().addParent(parent.get(), Constants.FEMALE_PARENT_POS);
-                parent.get().addChild(child.get());
+        if (oChild.isPresent() && oParent.isPresent()) {//both exist
+            Person child = oChild.get();
+            Person parent = oParent.get();
+            if (parent.getGender().equals(Constants.FEMALE) && !child.getParentByPos(Constants.FEMALE_PARENT_POS).isPresent()) {
+                child.addParent(parent, Constants.FEMALE_PARENT_POS);
+                parent.addChild(child);
                 isSet = true;
-            } else if (parent.get().getGender().equals(Constants.MALE) && !child.get().getParentByPos(Constants.MALE_PARENT_POS).isPresent()) {
-                child.get().addParent(parent.get(), Constants.MALE_PARENT_POS);
-                parent.get().addChild(child.get());
+            } else if (parent.getGender().equals(Constants.MALE) && !child.getParentByPos(Constants.MALE_PARENT_POS).isPresent()) {
+                child.addParent(parent, Constants.MALE_PARENT_POS);
+                parent.addChild(child);
                 isSet = true;
             }
         }
@@ -96,11 +98,12 @@ public class Family {
 
 
     public String[] getChildren(String name) {
-        Optional<Person> person = get(name);
+        Optional<Person> oPerson = get(name);
         String children[] = new String[0];
-        if (person.isPresent()) {
-            children = new String[person.get().getNumChildren()];
-            List<Person> childrenList = person.get().getChildren();
+        if (oPerson.isPresent()) {
+            Person person = oPerson.get();
+            children = new String[person.getNumChildren()];
+            List<Person> childrenList = person.getChildren();
             for (int i = 0; i < childrenList.size(); i++) {
                 children[i] = childrenList.get(i).getName();
             }
